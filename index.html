@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>dxteipx - developer & creator</title>
+  <meta name="description" content="Personal portfolio of dxteipx, a developer and creator based in Porto, Portugal. C#, Python, HTML, JavaScript and PHP.">
+
+  <style>
+    /* ==========================================================
+       DESIGN TOKENS
+       ========================================================== */
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --fg-dim: rgba(255, 255, 255, 0.6);   /* secondary text */
+      --fg-faint: rgba(255, 255, 255, 0.4); /* very dimmed text */
+      --line: rgba(255, 255, 255, 0.15);    /* thin borders */
+      --hover-bg: rgba(255, 255, 255, 0.04);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --max: 900px;
+    }
+
+    /* ==========================================================
+       BASE
+       ========================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Section labels, e.g. "// portfolio" */
+    .label {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--fg-dim);
+      letter-spacing: 0.02em;
+      margin: 0 0 32px;
+    }
+
+    /* Reusable link style with arrow */
+    .link {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--fg);
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+    .link:hover,
+    .link:focus-visible { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+
+    /* ==========================================================
+       NAVBAR
+       ========================================================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .logo { font-family: var(--mono); font-size: 0.95rem; font-weight: 600; }
+    .nav-links { display: flex; gap: 24px; font-family: var(--mono); font-size: 0.85rem; }
+    .nav-links a { opacity: 0.6; transition: opacity 0.2s ease; }
+    .nav-links a:hover,
+    .nav-links a:focus-visible { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+
+    /* ==========================================================
+       HERO
+       ========================================================== */
+    .hero { padding: 96px 0 64px; }
+
+    /* Dark gray circle is the fallback if perfil.png fails to load */
+    .avatar {
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      background: #2a2a2a;
+      overflow: hidden;
+      margin-bottom: 32px;
+      border: 1px solid var(--line);
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .hero h1 {
+      font-size: clamp(3rem, 12vw, 6rem);
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0 0 16px;
+    }
+    .hero .subtitle { font-size: 1.25rem; margin: 0 0 8px; }
+    .hero .location { font-family: var(--mono); font-size: 0.9rem; color: var(--fg-dim); margin: 0 0 32px; }
+
+    .social { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 32px; }
+
+    .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; }
+
+    .clock { font-family: var(--mono); font-size: 0.8rem; color: var(--fg-faint); }
+    .clock span { color: var(--fg-dim); }
+
+    /* Visit counter (eye icon + number), hidden until the count loads */
+    .views {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--fg-dim);
+    }
+    .views[hidden] { display: none; }
+    .views svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.6; }
+
+    /* ==========================================================
+       TECH STACK
+       ========================================================== */
+    .stack { padding: 0 0 96px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 0; }
+    .tags li {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      padding: 6px 14px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      color: var(--fg-dim);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .tags li:hover { color: var(--fg); border-color: rgba(255, 255, 255, 0.4); }
+
+    /* ==========================================================
+       PROJECTS
+       ========================================================== */
+    .projects { padding: 64px 0 96px; }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .section-head h2 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    .counter { font-family: var(--mono); font-size: 0.85rem; color: var(--fg-dim); }
+
+    .project-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+
+    .project {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 8px 16px;
+      padding: 32px 16px;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.2s ease;
+    }
+    .project:hover { background: var(--hover-bg); }
+
+    .project .num { font-family: var(--mono); font-size: 0.85rem; color: var(--fg-dim); padding-top: 4px; }
+    .project .domain { font-family: var(--mono); font-size: 0.8rem; color: var(--fg-dim); margin: 0 0 4px; }
+    .project h3 { font-size: 1.5rem; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em; }
+    .project .desc { color: var(--fg-dim); margin: 0 0 16px; max-width: 60ch; }
+    .project-links { display: flex; gap: 24px; flex-wrap: wrap; }
+
+    .project-empty {
+      padding: 32px 16px;
+      border-bottom: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--fg-dim);
+    }
+
+    /* ==========================================================
+       CONTACT
+       ========================================================== */
+    .contact { padding: 64px 0 112px; border-top: 1px solid var(--line); }
+    .contact h2 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 32px;
+    }
+
+    /* ==========================================================
+       FOOTER
+       ========================================================== */
+    .footer { border-top: 1px solid var(--line); padding: 32px 0; }
+    .footer .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .footer .brand { font-family: var(--mono); font-size: 0.9rem; font-weight: 600; }
+    .footer .links { display: flex; gap: 20px; }
+    .footer .copy {
+      flex-basis: 100%;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--fg-faint);
+      margin: 8px 0 0;
+    }
+
+    /* ==========================================================
+       RESPONSIVE
+       ========================================================== */
+    @media (max-width: 600px) {
+      .container { padding: 0 20px; }
+      .hero { padding: 64px 0 48px; }
+      .nav-links { gap: 16px; font-size: 0.8rem; }
+      .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .project { grid-template-columns: 1fr; padding: 28px 12px; }
+      .project .num { padding-top: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="navbar">
+    <div class="container">
+      <a href="#top" class="logo">dxteipx</a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#projects">projects</a>
+        <a href="#contact">contact</a>
+        <!-- EDIT: GitHub link -->
+        <a href="https://github.com/dxteipx" target="_blank" rel="noopener noreferrer">github ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="container">
+        <p class="label">// portfolio</p>
+
+        <!-- Profile picture: put perfil.png in the same folder as this file -->
+        <div class="avatar">
+          <img src="perfil.png" alt="dxteipx profile picture" onerror="this.style.display='none'">
+        </div>
+
+        <h1>dxteipx.</h1>
+        <p class="subtitle">developer &amp; creator</p>
+        <p class="location">based in Porto, Portugal</p>
+
+        <!-- EDIT: social links -->
+        <div class="social">
+          <a class="link" href="https://github.com/dxteipx" target="_blank" rel="noopener noreferrer">github ↗</a>
+          <a class="link" href="https://instagram.com/dxteipx" target="_blank" rel="noopener noreferrer">instagram ↗</a>
+        </div>
+
+        <div class="meta">
+          <!-- Live clock (Lisbon time), updated every second by the script below -->
+          <div class="clock">lisbon time · <span id="clock">--:--:--</span></div>
+
+          <!-- Visit counter: needs counter.php on your host. Stays hidden if it can't load -->
+          <div class="views" id="views" title="profile views" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span id="views-count">0</span>
+            <span class="sr-only" style="position:absolute;left:-9999px">profile views</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TECH STACK ===================== -->
+    <section class="stack" aria-label="Tech stack">
+      <div class="container">
+        <ul class="tags">
+          <li>C#</li>
+          <li>Python</li>
+          <li>HTML</li>
+          <li>JavaScript</li>
+          <li>PHP</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== PROJECTS ===================== -->
+    <section class="projects" id="projects">
+      <div class="container">
+        <p class="label">// selected work</p>
+
+        <div class="section-head">
+          <h2>projects</h2>
+          <!-- Counter is updated automatically from the number of cards below -->
+          <span class="counter" id="project-count">0 projects</span>
+        </div>
+
+        <!-- ==================================================
+             EDIT YOUR PROJECTS HERE
+             Copy one <li class="project"> block to add more.
+             Change: number, domain, title, description, link.
+             ================================================== -->
+        <ol class="project-list">
+
+          <li class="project">
+            <span class="num">01</span>
+            <div>
+              <p class="domain">github.com/dxteipx/Kestrel</p>
+              <h3>Kestrel</h3>
+              <p class="desc">An all-in-one control center for Windows: live system stats, a health score, cleanup, driver updates, startup apps and a launcher for apps and games. Built with Python, with its own installer and automatic updates.</p>
+              <div class="project-links">
+                <a class="link" href="https://github.com/dxteipx/Kestrel" target="_blank" rel="noopener noreferrer">view on github ↗</a>
+                <a class="link" href="https://github.com/dxteipx/Kestrel/releases/latest" target="_blank" rel="noopener noreferrer">download ↗</a>
+              </div>
+            </div>
+          </li>
+
+          <!-- Example project card (uncomment and edit to add a project):
+          <li class="project">
+            <span class="num">01</span>
+            <div>
+              <p class="domain">project-one.com</p>
+              <h3>Project One</h3>
+              <p class="desc">Short description of my first project.</p>
+              <a class="link" href="https://project-one.com" target="_blank" rel="noopener noreferrer">visit project ↗</a>
+            </div>
+          </li>
+          -->
+
+        </ol>
+        <!-- ================= END OF PROJECTS ================= -->
+      </div>
+    </section>
+
+    <!-- ===================== CONTACT ===================== -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <p class="label">// contact</p>
+        <h2>my socials.</h2>
+        <!-- EDIT: social links -->
+        <div class="social" style="margin-bottom:0">
+          <a class="link" href="https://github.com/dxteipx" target="_blank" rel="noopener noreferrer">github ↗</a>
+          <a class="link" href="https://instagram.com/dxteipx" target="_blank" rel="noopener noreferrer">instagram ↗</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <span class="brand">dxteipx</span>
+        <!-- EDIT: social links -->
+        <div class="links">
+          <a class="link" href="https://github.com/dxteipx" target="_blank" rel="noopener noreferrer">github ↗</a>
+          <a class="link" href="https://instagram.com/dxteipx" target="_blank" rel="noopener noreferrer">instagram ↗</a>
+        </div>
+        <p class="copy">© 2026 dxteipx</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ---------- Live clock (Lisbon time) ----------
+    const clockEl = document.getElementById('clock');
+    const lisbonTime = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Lisbon',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+
+    function updateClock() {
+      clockEl.textContent = lisbonTime.format(new Date());
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // ---------- Visit counter (reads counter.php on your host) ----------
+    // EDIT: change the path if you put counter.php somewhere else
+    const COUNTER_URL = 'counter.php';
+
+    (async function loadViews() {
+      try {
+        // Count only the first visit of each browser session (refreshes don't inflate it)
+        let counted = false;
+        try { counted = sessionStorage.getItem('dxteipx_counted') === '1'; } catch (e) {}
+
+        const res = await fetch(COUNTER_URL + (counted ? '' : '?hit=1'), { cache: 'no-store' });
+        if (!res.ok) throw new Error('counter unavailable');
+        const data = await res.json();
+        if (typeof data.views !== 'number') throw new Error('bad response');
+
+        try { sessionStorage.setItem('dxteipx_counted', '1'); } catch (e) {}
+        document.getElementById('views-count').textContent = data.views.toLocaleString('en-US');
+        document.getElementById('views').hidden = false;
+      } catch (e) {
+        // If the counter can't load (e.g. opening the file locally), stay hidden
+      }
+    })();
+
+    // ---------- Project counter (counts the cards automatically) ----------
+    const total = document.querySelectorAll('.project').length;
+    document.getElementById('project-count').textContent =
+      total + (total === 1 ? ' project' : ' projects');
+  </script>
+
+</body>
+</html>
